@@ -3,9 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>Google Maps App</title>
 </head>
 <body>
+    <h1><span class="letterh1">D</span>riving <span class="letterh1">D</span>irections</h1>
     
+    <div class="inputContainer">
+    
+    <div class="inputCard">
+        <div class="formDiv">
+            <label for="lat">Lat:</label>
+            <input type="text" value="32.7157" name="lat" id="lat" placeholder="lat..." autocomplete="off">
+        </div>
+        <div class="formDiv">
+            <label for="long">Long:</label>
+            <input type="text" value="-117.1611" name="long" id="long" placeholder="long..." autocomplete="off">
+        </div>
+        <button class="enter">Find</button>
+
+        <img class='car_sprite' src="car.png" alt="car">
+    </div>
+   
+</div>
+
+<div id="map"></div>
+
+
+<script defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqQkDDtszYNx110F-7JP9sVeKkud9WVk8&callback=initMap">
+</script>
+
+<script>
+
+let btn = document.querySelector("button");
+let map;
+btn.onclick=()=>{
+    let clientCoords = {lat:parseFloat(document.querySelector("input[name='lat'").value),
+                         lng:parseFloat(document.querySelector("input[name='long'").value)}
+
+    console.log(clientCoords)
+    var clientmarker = new google.maps.Marker({position: clientCoords, map: map});
+
+    sessionStorage.setItem('coords',JSON.stringify(clientCoords))
+}
+
+
+let proxy = 'https://cors-anywhere.herokuapp.com/'
+let apikey = 'AIzaSyAqQkDDtszYNx110F-7JP9sVeKkud9WVk8'
+
+function initMap() {
+   let sessionCoords = JSON.parse(sessionStorage.getItem("coords"));
+   console.log(sessionCoords)
+ 
+  // The location of Uluru
+  var coords = {lat: 36.7783, lng: -119.4179};
+  var bishop = {lat:37.361,lng: -118.395}
+
+  console.log("Bishop")
+  // The map, centered at Uluru
+  var map = new google.maps.Map(
+      document.getElementById('map'), {zoom: 4, center: coords});
+  // The marker, positioned at Uluru
+  var centralMarker = new google.maps.Marker({position:coords,map})
+  var marker = new google.maps.Marker({position: bishop, map: map});
+  var clientmarker = new google.maps.Marker({position: sessionCoords, map: map});
+}
+
+
+
+// fetch(`${proxy}https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=40.6655101,-73.89188969999998&destinations=40.6905615%2C-73.9976592%7C40.6905615%2C-73.9976592%7C40.6905615%2C-73.9976592%7C40.6905615%2C-73.9976592%7C40.6905615%2C-73.9976592%7C40.6905615%2C-73.9976592%7C40.659569%2C-73.933783%7C40.729029%2C-73.851524%7C40.6860072%2C-73.6334271%7C40.598566%2C-73.7527626%7C40.659569%2C-73.933783%7C40.729029%2C-73.851524%7C40.6860072%2C-73.6334271%7C40.598566%2C-73.7527626&key=${apikey}`)
+
+//  fetch(`${proxy}https://maps.googleapis.com/maps/api/distancematrix/json?origins=Boston,MA|Charlestown,MA&destinations=Lexington,MA|Concord,MA&departure_time=now&key=${apikey}`)
+// .then(res=>res.json())
+// .then(res=>{
+//     console.log(res)
+// })
+</script>
+    <script src="cloud.js"></script>
 </body>
 </html>
